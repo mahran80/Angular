@@ -1,4 +1,6 @@
-# Day2
+Lab 4,5,6
+username=emilys
+password=emilyspass
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.27.
 
