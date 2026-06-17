@@ -1,0 +1,21 @@
+<div class="border border-warning border-2 p-3" style="min-height: 200px;">
+
+    @for (task of allTasks; track task.id) {
+    <div class="d-flex justify-content-between align-items-center mb-2 p-2 border">
+
+    <h5 [ngStyle]="{'text-decoration': task.isDone ? 'line-through' : 'none'}">
+        {{ task.name }}
+    </h5>
+    
+    <button class="btn"
+            [ngClass]="task.isDone ? 'btn-secondary' : 'btn-outline-dark'"
+            (click)="markAsDone(task.id)">
+        {{ task.isDone ? 'Checked' : 'Check' }}
+    </button>
+
+    </div>
+    } @empty {
+    <p class="text-center text-muted mt-4">No tasks yet. Add one!</p>
+    }
+
+</div>

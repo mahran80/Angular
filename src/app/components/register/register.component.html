@@ -1,0 +1,100 @@
+<div class="container mt-4 mb-5">
+  <h2>User Registration</h2>
+  
+  <form [formGroup]="registerForm" (ngSubmit)="register()" class="card p-4 shadow-sm">
+    
+    <div class="mb-3">
+      <label class="form-label">Full Name</label>
+      <input type="text" class="form-control" formControlName="fullName"
+             [ngClass]="{'is-invalid': fullName.invalid && fullName.touched, 'is-valid': fullName.valid && fullName.touched}">
+      
+      @if (fullName.touched && fullName.invalid) {
+        <div class="invalid-feedback">
+          @if (fullName.hasError('required')) { <p class="m-0">Full Name is required.</p> }
+          @if (fullName.hasError('minlength')) { <p class="m-0">Must be at least 5 characters.</p> }
+        </div>
+      }
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input type="email" class="form-control" formControlName="email"
+             [ngClass]="{'is-invalid': email.invalid && email.touched, 'is-valid': email.valid && email.touched}">
+      
+      @if (email.touched && email.invalid) {
+        <div class="invalid-feedback">
+          @if (email.hasError('required')) { <p class="m-0">Email is required.</p> }
+          @if (email.hasError('email') || email.hasError('pattern')) { <p class="m-0">Please enter a valid email.</p> }
+        </div>
+      }
+    </div>
+
+    <div class="mb-3" formArrayName="mobiles">
+      <label class="form-label">Mobile Numbers</label>
+      
+      @for (mobileCtrl of mobiles.controls; track $index) {
+        <div class="d-flex gap-2 mb-2">
+          <input type="text" class="form-control" [formControlName]="$index" placeholder="01xxxxxxxxx"
+                 [ngClass]="{'is-invalid': mobileCtrl.invalid && mobileCtrl.touched, 'is-valid': mobileCtrl.valid && mobileCtrl.touched}">
+          
+          @if ($index > 0) {
+            <button type="button" class="btn btn-danger" (click)="removeMobile($index)">Remove</button>
+          }
+        </div>
+        
+        @if (mobileCtrl.touched && mobileCtrl.invalid) {
+          <div class="text-danger small mb-2">
+            @if (mobileCtrl.hasError('required')) { <p class="m-0">Mobile is required.</p> }
+            @if (mobileCtrl.hasError('pattern')) { <p class="m-0">Must be a valid Egyptian mobile number.</p> }
+          </div>
+        }
+      }
+      <button type="button" class="btn btn-sm btn-outline-primary mt-1" (click)="addMobile()">+ Add Another Mobile</button>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Password</label>
+      <input type="password" class="form-control" formControlName="password"
+             [ngClass]="{'is-invalid': password.invalid && password.touched, 'is-valid': password.valid && password.touched}">
+      
+      @if (password.touched && password.invalid) {
+        <div class="invalid-feedback">
+          @if (password.hasError('required')) { <p class="m-0">Password is required.</p> }
+          @if (password.hasError('minlength')) { <p class="m-0">Must be at least 6 characters.</p> }
+        </div>
+      }
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Confirm Password</label>
+      <input type="password" class="form-control" formControlName="confirmPassword"
+             [ngClass]="{'is-invalid': (confirmPassword.invalid || registerForm.hasError('passwordMismatch')) && confirmPassword.touched, 
+                         'is-valid': confirmPassword.valid && !registerForm.hasError('passwordMismatch') && confirmPassword.touched}">
+      
+      @if (confirmPassword.touched) {
+        <div class="invalid-feedback d-block">
+          @if (confirmPassword.hasError('required')) { <p class="m-0">Confirm Password is required.</p> }
+          @if (registerForm.hasError('passwordMismatch') && !confirmPassword.hasError('required')) { 
+            <p class="m-0 text-danger">Passwords do not match!</p> 
+          }
+        </div>
+      }
+    </div>
+
+    <div class="d-flex gap-2">
+      <button type="submit" class="btn btn-success" [disabled]="registerForm.invalid">Register</button>
+      <button type="button" class="btn btn-secondary" (click)="resetForm()">Reset Form</button>
+    </div>
+  </form>
+
+  @if (submittedData) {
+    <div class="card mt-4 bg-light">
+      <div class="card-body">
+        <h4 class="text-success">Registration Successful!</h4>
+        <p><strong>Name:</strong> {{ submittedData.fullName }}</p>
+        <p><strong>Email:</strong> {{ submittedData.email }}</p>
+        <p><strong>Mobiles:</strong> {{ submittedData.mobiles.join(', ') }}</p>
+      </div>
+    </div>
+  }
+</div>

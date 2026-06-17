@@ -1,0 +1,30 @@
+<div class="container mt-4">
+  <h2>User Login</h2>
+
+  <form [formGroup]="loginForm" (ngSubmit)="login()" class="card p-4 shadow-sm">
+    <div class="mb-3">
+      <label class="form-label">Username</label>
+      <input type="text" class="form-control" formControlName="username"
+             [ngClass]="{'is-invalid': username.invalid && username.touched, 'is-valid': username.valid && username.touched}">
+      @if (username.touched && username.invalid) {
+        <div class="invalid-feedback">
+          @if (username.hasError('required')) { <p class="m-0">Username is required.</p> }
+        </div>
+      }
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Password</label>
+      <input type="password" class="form-control" formControlName="password"
+             [ngClass]="{'is-invalid': password.invalid && password.touched, 'is-valid': password.valid && password.touched}">
+      @if (password.touched && password.invalid) {
+        <div class="invalid-feedback">
+          @if (password.hasError('required')) { <p class="m-0">Password is required.</p> }
+          @if (password.hasError('minlength')) { <p class="m-0">Password must be at least 6 characters.</p> }
+        </div>
+      }
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">Login</button>
+  </form>
+</div>

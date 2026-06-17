@@ -1,0 +1,16 @@
+<div class="container mt-5">
+    <div class="border border-danger border-2 p-4">
+    
+    <h3 class="text-center mb-4">
+        {{ doneCount }} of {{ tasksArray.length }} checked
+    </h3>
+
+    <app-task-input (onTaskAdded)="receiveNewTask($event)"></app-task-input>
+
+    <app-task-list
+        [allTasks]="tasksArray"
+        (onTaskChecked)="updateTaskStatus($event)">
+    </app-task-list>
+
+    </div>
+</div>
